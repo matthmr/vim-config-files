@@ -96,6 +96,11 @@ let @r="*TODO.: "
 
 " Highlight color fix
 " https://stackoverflow.com/questions/3074068/how-to-change-the-color-of-the-selected-code-vim-scheme
-" hi Visual term=reverse cterm=reverse
 set bg=dark
+
+" Plugins (plug-vim)
+call plug#begin()
+Plug 'junegunn/fzf', { 'dir': '~/.vimplugs/fzf', 'do': './install --all' }
+Plug 
+call plug#end()
 
