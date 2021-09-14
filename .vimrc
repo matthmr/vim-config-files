@@ -37,7 +37,7 @@ set nohlsearch
 set incsearch
 
 " Color scheme
-" colorscheme industrial
+colorscheme codedark
 
 " Mouse
 set mouse=a
@@ -64,6 +64,7 @@ nnoremap S :%s//g<Left><Left>
 map <silent> <C-t>n :tabnew<CR>
 " map <silent> <C-t><C-c> :tabclose<CR>
 map <silent> <C-t>t :tabnext<CR>
+map <silent> <C-t>p :tabprevious<CR>
 
 " Cursor
 set guicursor=
@@ -88,10 +89,10 @@ map <M>e <C-w>=
 " Default:
 "		\"np					|"tp						|"bp		|"rp
 "		NOTE(mh): ...	| TODO(mh): ... |NOTE.	|TODO.
-let @n="NOTE(mh): "
-let @t="TODO(mh): "
-let @b="NOTE.: "
-let @r="TODO.: "
+let @n="*NOTE(mh): "
+let @t="*TODO(mh): "
+let @b="*NOTE.: "
+let @r="*TODO.: "
 
 " Highlight color fix
 " https://stackoverflow.com/questions/3074068/how-to-change-the-color-of-the-selected-code-vim-scheme
