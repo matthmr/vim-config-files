@@ -45,7 +45,7 @@ set novisualbell
 
 " System clipboard
 set clipboard=unamedplus
-map <S-insert> <C-i>
+" map <S-insert> <C-i>
 
 " Autocompletion
 " set wildmode
@@ -88,8 +88,17 @@ map <M>e <C-w>=
 " Quit Alternative
 map Q :q<CR>
 
-" Esc alternative
+" Esc Alternative
 map <C-c> <ESC>
+
+" Find Alternative
+map <C-f> /
+
+" Line Number Alternative
+map <leader>n :
+
+" g C-g Alternative
+map <leader>v g<C-g>
 
 " Note & todo macro
 let @n="*NOTE(mh): "
@@ -129,7 +138,7 @@ nnoremap <leader>d :NERDTreeToggle<CR>
 
 " File nnoremaps
 nnoremap <leader>w :e#<CR>
-nnoremap <leader>f :FZF<CR>
+nnoremap <leader>s :FZF<CR>
 
 " Terminal nnoremaps
 nnoremap <leader>t :vert term<CR>
@@ -137,3 +146,17 @@ nnoremap <leader>t :vert term<CR>
 " Search Highlighting nnoremap
 let hlstate=0
 nnoremap <silent> <C-s> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
+
+" Grepping
+nnoremap <leader>f :vimgrep  /<left><left>
+map <leader>f, :cp<CR>
+map <leader>f. :cn<CR>
+
+" Diffing
+map <C-m> :vert diffsplit 
+
+" Get Current Working Directory
+nnoremap <leader>p :pwd<CR>
+
+" Show number of lines & such
+set showcmd
