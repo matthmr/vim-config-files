@@ -16,7 +16,7 @@ set shiftwidth=2
 set noexpandtab
 " }
 
-" Formating -- Continue
+" Formating
 set ruler
 " set nowrap
 
@@ -58,13 +58,13 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " Replacement
-nnoremap S :%s//g<Left><Left>
+nnoremap S :%s///g<Left><Left><Left>
 
 " Tabs
-map <silent> <C-t>n :tabnew<CR>
-" map <silent> <C-t><C-c> :tabclose<CR>
-map <silent> <C-t>t :tabnext<CR>
-map <silent> <C-t>p :tabprevious<CR>
+nnoremap <C-w>n :tabnew<CR>
+nnoremap <C-w>c :tabclose<CR>
+nnoremap <C-w>. :tabnext<CR>
+nnoremap <C-w>, :tabprevious<CR>
 
 " Cursor
 set guicursor=
@@ -85,22 +85,55 @@ map <M>k <C-w>-
 map <M>l <C-w>>
 map <M>e <C-w>=
 
+" Quit Alternative
+map Q :q<CR>
+
+" Esc alternative
+map <C-c> <ESC>
+
 " Note & todo macro
-" Default:
-"		\"np					|"tp						|"bp		|"rp
-"		NOTE(mh): ...	| TODO(mh): ... |NOTE.	|TODO.
 let @n="*NOTE(mh): "
 let @t="*TODO(mh): "
 let @b="*NOTE.: "
 let @r="*TODO.: "
+let @f="*FIXME(mh)"
+let @d="*FIXME."
 
 " Highlight color fix
 " https://stackoverflow.com/questions/3074068/how-to-change-the-color-of-the-selected-code-vim-scheme
 set bg=dark
 
+" Highlight line
+set cursorline
+
+" Remap Leader
+let mapleader = " "
+
+" Left Column
+" set signcolumn=yes
+
 " Plugins (plug-vim)
 call plug#begin()
-Plug 'junegunn/fzf', { 'dir': '~/.vimplugs/fzf', 'do': './install --all' }
-Plug 
+Plug 'junegunn/fzf'
+"Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'scrooloose/nerdcommenter'
+"Plug 'airblade/vim-gitgutter'
+Plug 'ap/vim-css-color'
+Plug 'wellle/context.vim'
 call plug#end()
 
+" Plugin Specific
+" Nerd Tree
+nnoremap <leader>d :NERDTreeToggle<CR>
+
+" File nnoremaps
+nnoremap <leader>w :e#<CR>
+nnoremap <leader>f :FZF<CR>
+
+" Terminal nnoremaps
+nnoremap <leader>t :vert term<CR>
+
+" Search Highlighting nnoremap
+let hlstate=0
+nnoremap <silent> <C-s> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
