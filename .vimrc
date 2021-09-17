@@ -29,8 +29,8 @@ set noundofile
 syntax on
 
 " Mapping
-vmap x "_d
-" map x "_d
+map x "_dl
+vmap X "_d
 
 " Highlighting
 set nohlsearch
@@ -92,13 +92,10 @@ map Q :q<CR>
 map <C-c> <ESC>
 
 " Find Alternative
-map <C-f> /
+map <C-a> /
 
 " Line Number Alternative
-map <leader>n :
-
-" g C-g Alternative
-map <leader>v g<C-g>
+map <C-n> :
 
 " Note & todo macro
 let @n="*NOTE(mh): "
@@ -130,6 +127,7 @@ Plug 'scrooloose/nerdcommenter'
 "Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'wellle/context.vim'
+Plug 'dkprice/vim-easygrep'
 call plug#end()
 
 " Plugin Specific
@@ -149,14 +147,19 @@ nnoremap <silent> <C-s> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch
 
 " Grepping
 nnoremap <leader>f :vimgrep  /<left><left>
-map <leader>f, :cp<CR>
-map <leader>f. :cn<CR>
+map <C-f>, :cp<CR>
+map <C-f>. :cn<CR>
 
 " Diffing
-map <C-m> :vert diffsplit 
+map <C-m> :vert diffsplit
 
 " Get Current Working Directory
 nnoremap <leader>p :pwd<CR>
 
 " Show number of lines & such
 set showcmd
+
+" Folding
+" set foldmethod=syntax
+map <C-f>o :foldopen<CR>
+map <C-f>c :foldclose<CR>
