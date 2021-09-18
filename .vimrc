@@ -94,6 +94,9 @@ map <C-c> <ESC>
 " Find Alternative
 map <C-a> /
 
+" Find Only in visual area
+map <C-a>v /\%V
+
 " Line Number Alternative
 map <C-n> :
 
@@ -146,7 +149,7 @@ let hlstate=0
 nnoremap <silent> <C-s> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
 
 " Grepping
-nnoremap <leader>f :vimgrep  /<left><left>
+nnoremap <leader>f :vimgrep  *<left><left>
 map <C-f>, :cp<CR>
 map <C-f>. :cn<CR>
 
@@ -161,5 +164,6 @@ set showcmd
 
 " Folding
 " set foldmethod=syntax
+set foldlevel=99 " otherwise all is folded by default
 map <C-f>o :foldopen<CR>
 map <C-f>c :foldclose<CR>
