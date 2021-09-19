@@ -79,11 +79,15 @@ set noerrorbells
 set scrolloff=4
 
 " Resizing windows
-map <M>h <C-w><
-map <M>j <C-w>+
-map <M>k <C-w>-
-map <M>l <C-w>>
-map <M>e <C-w>=
+map ^[h <C-w><
+map ^[j <C-w>+
+map ^[k <C-w>-
+map ^[l <C-w>>
+map ^[e <C-w>=
+
+" Creating Adjecent windows
+map <C-w>w <C-w>v
+" map <C-w>s <C-w>s
 
 " Quit Alternative
 map Q :q<CR>
@@ -92,13 +96,19 @@ map Q :q<CR>
 map <C-c> <ESC>
 
 " Find Alternative
-map <C-a> /
+map <C-f> /
 
 " Find Only in visual area
 map <C-a>v /\%V
 
+" Find From Register
+map <C-a>r /<C-r>"<CR>
+
 " Line Number Alternative
 map <C-n> :
+
+" Saving Alternative
+map W :w<CR>
 
 " Note & todo macro
 let @n="*NOTE(mh): "
@@ -149,9 +159,9 @@ let hlstate=0
 nnoremap <silent> <C-s> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
 
 " Grepping
-nnoremap <leader>f :vimgrep  *<left><left>
-map <C-f>, :cp<CR>
-map <C-f>. :cn<CR>
+nnoremap <leader>g :vimgrep  *<left><left>
+map <C-g>, :cp<CR>
+map <C-g>. :cn<CR>
 
 " Diffing
 map <C-m> :vert diffsplit
@@ -164,6 +174,6 @@ set showcmd
 
 " Folding
 " set foldmethod=syntax
-set foldlevel=99 " otherwise all is folded by default
-map <C-f>o :foldopen<CR>
-map <C-f>c :foldclose<CR>
+set foldlevel=99 " otherwise everything is folded by default
+map <C-t>o :foldopen<CR>
+map <C-t>c :foldclose<CR>
