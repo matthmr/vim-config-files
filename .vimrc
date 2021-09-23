@@ -99,10 +99,11 @@ map <C-c> <ESC>
 map <C-f> /
 
 " Find Only in visual area
-map <C-a>v /\%V
+map <C-a>o /\%V
 
 " Find From Register
 map <C-a>r /<C-r>"<CR>
+vnoremap <C-a>v y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " Line Number Alternative
 map <C-n> :
@@ -141,11 +142,20 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'ap/vim-css-color'
 Plug 'wellle/context.vim'
 Plug 'dkprice/vim-easygrep'
+Plug 'tpope/vim-surround'
+Plug 'pseewald/vim-anyfold'
 call plug#end()
 
 " Plugin Specific
 " Nerd Tree
 nnoremap <leader>d :NERDTreeToggle<CR>
+
+" Anyfold
+map <leader><C-a>a :AnyFoldActivate<CR>
+
+" Context
+map <leader><C-c>e :ContextEnable<CR>
+map <leader><C-c>d :ContextDisable<CR>
 
 " File nnoremaps
 nnoremap <leader>w :e#<CR>
@@ -164,7 +174,7 @@ map <C-g>, :cp<CR>
 map <C-g>. :cn<CR>
 
 " Diffing
-map <C-m> :vert diffsplit
+map <leader>D :vert diffsplit
 
 " Get Current Working Directory
 nnoremap <leader>p :pwd<CR>
@@ -174,6 +184,6 @@ set showcmd
 
 " Folding
 " set foldmethod=syntax
-set foldlevel=99 " otherwise everything is folded by default
+set foldlevel=92 " otherwise everything is folded by default
 map <C-t>o :foldopen<CR>
 map <C-t>c :foldclose<CR>
