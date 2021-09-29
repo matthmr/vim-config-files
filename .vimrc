@@ -190,7 +190,11 @@ set foldlevel=92 " otherwise everything is folded by default
 map <C-t>o :foldopen<CR>
 map <C-t>c :foldclose<CR>
 
-
-"set list
-"set listchars=tab:/|/
-"map <leader><C-s>
+" List Chars config
+set list
+" full listchars config
+" set listchars=eol:↓,tab:\ \ ┊,trail:·,extends:…,precedes:…,space:·
+set listchars=tab:\¦\ ,trail:·,extends:…,precedes:…
+hi SpecialKey ctermfg=240 guifg=#585858
+" Other alternatives
+map <leader><C-s> g<C-g>
