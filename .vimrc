@@ -91,6 +91,7 @@ map <C-w>w <C-w>v
 
 " Quit Alternative
 map Q :q<CR>
+map <leader>Q :q!<CR>
 
 " Esc Alternative
 map <C-c> <ESC>
@@ -116,7 +117,7 @@ let @n="*NOTE(mh): "
 let @t="*TODO(mh): "
 let @b="*NOTE.: "
 let @r="*TODO.: "
-let @f="*FIXME(mh)"
+let @f="*FIXME(mh):"
 let @d="*FIXME."
 
 " Highlight color fix
@@ -144,6 +145,7 @@ Plug 'wellle/context.vim'
 Plug 'dkprice/vim-easygrep'
 Plug 'tpope/vim-surround'
 Plug 'pseewald/vim-anyfold'
+Plug 'tomasiser/vim-code-dark'
 call plug#end()
 
 " Plugin Specific
@@ -187,3 +189,8 @@ set showcmd
 set foldlevel=92 " otherwise everything is folded by default
 map <C-t>o :foldopen<CR>
 map <C-t>c :foldclose<CR>
+
+
+"set list
+"set listchars=tab:/|/
+"map <leader><C-s>
