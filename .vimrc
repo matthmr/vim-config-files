@@ -94,17 +94,17 @@ map Q :q<CR>
 map <leader>Q :q!<CR>
 
 " Esc Alternative
-map <C-c> <ESC>
+map <C-c> <ESC>l
 
 " Find Alternative
 map <C-f> /
 
 " Find Only in visual area
-map <C-a>o /\%V
+map <leader>o /\%V
 
 " Find From Register
-map <C-a>r /<C-r>"<CR>
-vnoremap <C-a>v y/\V<C-R>=escape(@",'/\')<CR><CR>
+map <leader>r /<C-r>"<CR>
+vnoremap <leader>v y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " Line Number Alternative
 map <C-n> :
@@ -112,13 +112,18 @@ map <C-n> :
 " Saving Alternative
 map W :w<CR>
 
-" Note & todo macro
+" Macros
+
+" Noter + Flower
 let @n="*NOTE(mh): "
 let @t="*TODO(mh): "
 let @b="*NOTE.: "
 let @r="*TODO.: "
 let @f="*FIXME(mh):"
 let @d="*FIXME."
+
+" Deploy
+let @s="*DEPLOY"
 
 " Highlight color fix
 " https://stackoverflow.com/questions/3074068/how-to-change-the-color-of-the-selected-code-vim-scheme
@@ -153,7 +158,7 @@ call plug#end()
 nnoremap <leader>d :NERDTreeToggle<CR>
 
 " Anyfold
-map <leader><C-a>a :AnyFoldActivate<CR>
+map <leader>a :AnyFoldActivate<CR>
 
 " Context
 map <leader><C-c>e :ContextEnable<CR>
@@ -196,5 +201,12 @@ set list
 " set listchars=eol:↓,tab:\ \ ┊,trail:·,extends:…,precedes:…,space:·
 set listchars=tab:\¦\ ,trail:·,extends:…,precedes:…
 hi SpecialKey ctermfg=240 guifg=#585858
+
 " Other alternatives
 map <leader><C-s> g<C-g>
+map <C-m> <C-y>
+
+" Set syntax for custom langs
+au BufRead,BufNewFile *.mo      set filetype=mo
+au BufRead,BufNewFile *.sdd     set filetype=sdd
+au BufRead,BufNewFile *.deploy  set filetype=deploy
