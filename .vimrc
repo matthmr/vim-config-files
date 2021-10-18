@@ -207,6 +207,18 @@ map <leader><C-s> g<C-g>
 map <C-m> <C-y>
 
 " Set syntax for custom langs
+
+" scriptsd + deploy
 au BufRead,BufNewFile *.mo      set filetype=mo
-au BufRead,BufNewFile *.sdd     set filetype=sdd
+au BufRead,BufNewFile *.sdd     set filetype=sdd " DONE
 au BufRead,BufNewFile *.deploy  set filetype=deploy
+au BufRead,BufNewFile *.d.conf  set filetype=sdconf
+au BufRead,BufNewFile *.sd      set filetype=sd
+
+" moving lines
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+inoremap <C-j> <Esc>:m .+1<CR>==gi
+inoremap <C-k> <Esc>:m .-2<CR>==gi
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
