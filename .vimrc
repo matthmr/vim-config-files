@@ -37,7 +37,7 @@ set nohlsearch
 set incsearch
 
 " Color scheme
-colorscheme codedark
+colorscheme gruvbox
 
 " Mouse
 set mouse=a
@@ -79,11 +79,11 @@ set noerrorbells
 set scrolloff=4
 
 " Resizing windows
-map ^[h <C-w><
-map ^[j <C-w>+
-map ^[k <C-w>-
-map ^[l <C-w>>
-map ^[e <C-w>=
+nnoremap <leader><C-r>h <C-w><
+nnoremap <leader><C-r>j <C-w>+
+nnoremap <leader><C-r>k <C-w>-
+nnoremap <leader><C-r>l <C-w>>
+nnoremap <leader><C-r>e <C-w>=
 
 " Creating Adjecent windows
 map <C-w>w <C-w>v
@@ -151,6 +151,7 @@ Plug 'dkprice/vim-easygrep'
 Plug 'tpope/vim-surround'
 Plug 'pseewald/vim-anyfold'
 Plug 'tomasiser/vim-code-dark'
+Plug 'mbbill/undotree'
 call plug#end()
 
 " Plugin Specific
@@ -163,6 +164,8 @@ map <leader>a :AnyFoldActivate<CR>
 " Context
 map <leader><C-c>e :ContextEnable<CR>
 map <leader><C-c>d :ContextDisable<CR>
+" it uses quite a lot of memory tbh, so don't load it for big files
+let g:context_enabled = 0
 
 " File nnoremaps
 nnoremap <leader>w :e#<CR>
@@ -212,7 +215,7 @@ map <C-m> <C-y>
 au BufRead,BufNewFile *.mo      set filetype=mo
 au BufRead,BufNewFile *.sdd     set filetype=sdd " DONE
 au BufRead,BufNewFile *.deploy  set filetype=deploy
-au BufRead,BufNewFile *.d.conf  set filetype=sdconf
+au BufRead,BufNewFile *.d.conf  set filetype=dconf
 au BufRead,BufNewFile *.sd      set filetype=sd
 
 " moving lines
@@ -222,3 +225,35 @@ inoremap <C-j> <Esc>:m .+1<CR>==gi
 inoremap <C-k> <Esc>:m .-2<CR>==gi
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
+
+" cursor
+let &t_SI = "\e[5 q"
+let &t_EI = "\e[1 q"
+
+" tab suggestions
+set wildmenu
+
+" testing this out
+inoremap <expr> <Tab> TabComplete()
+fun! TabComplete()
+    if getline('.')[col('.') - 2] =~ '\K' || pumvisible()
+        return "\<C-N>"
+    else
+        return "\<Tab>"
+    endif
+endfun
+
+" Minimalist-AutoCompletePop-Plugin
+" set shortmess=c
+set ignorecase
+set completeopt=menu,menuone,noinsert
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+autocmd InsertCharPre * call AutoComplete()
+fun! AutoComplete()
+    if v:char =~ '\K'
+        \ && getline('.')[col('.') - 2] !~ '\K' " last char
+        \ && getline('.')[col('.') - 1] !~ '\K'
+
+        call feedkeys("\<C-N>", 'n')
+    end
+endfun
