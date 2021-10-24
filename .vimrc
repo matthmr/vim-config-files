@@ -94,7 +94,7 @@ map Q :q<CR>
 map <leader>Q :q!<CR>
 
 " Esc Alternative
-map <C-c> <ESC>l
+map <C-c> <ESC><ESC>
 
 " Find Alternative
 map <C-f> /
@@ -133,7 +133,7 @@ set bg=dark
 set cursorline
 
 " Remap Leader
-let mapleader = " "
+let mapleader = "\\"
 
 " Left Column
 " set signcolumn=yes
@@ -178,6 +178,7 @@ nnoremap <leader>t :vert term<CR>
 let hlstate=0
 nnoremap <silent> <C-s> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
 
+
 " Grepping
 nnoremap <leader>g :vimgrep  *<left><left>
 map <C-g>, :cp<CR>
@@ -207,24 +208,24 @@ hi SpecialKey ctermfg=240 guifg=#585858
 
 " Other alternatives
 map <leader><C-s> g<C-g>
-map <C-m> <C-y>
+noremap <C-m> <C-y>
 
 " Set syntax for custom langs
 
 " scriptsd + deploy
-au BufRead,BufNewFile *.mo      set filetype=mo
-au BufRead,BufNewFile *.sdd     set filetype=sdd " DONE
-au BufRead,BufNewFile *.deploy  set filetype=deploy
-au BufRead,BufNewFile *.d.conf  set filetype=dconf
-au BufRead,BufNewFile *.sd      set filetype=sd
+au BufRead,BufNewFile *.mo       set filetype=mo
+au BufRead,BufNewFile *.sd.d     set filetype=sddb " DONE
+au BufRead,BufNewFile *.sd.conf  set filetype=sdconf
+au BufRead,BufNewFile *.sd       set filetype=sd
+au BufRead,BufNewFile *.deploy   set filetype=deploy
 
 " moving lines
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
-inoremap <C-j> <Esc>:m .+1<CR>==gi
-inoremap <C-k> <Esc>:m .-2<CR>==gi
-vnoremap <C-j> :m '>+1<CR>gv=gv
-vnoremap <C-k> :m '<-2<CR>gv=gv
+nnoremap <leader><C-j> :m .+1<CR>==
+nnoremap <leader><C-k> :m .-2<CR>==
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+vnoremap <leader><C-j> :m '>+1<CR>gv=gv
+vnoremap <leader><C-k> :m '<-2<CR>gv=gv
 
 " cursor
 let &t_SI = "\e[5 q"
@@ -233,7 +234,7 @@ let &t_EI = "\e[1 q"
 " tab suggestions
 set wildmenu
 
-" testing this out
+" completion
 inoremap <expr> <Tab> TabComplete()
 fun! TabComplete()
     if getline('.')[col('.') - 2] =~ '\K' || pumvisible()
@@ -244,8 +245,9 @@ fun! TabComplete()
 endfun
 
 " Minimalist-AutoCompletePop-Plugin
-" set shortmess=c
+set shortmess=filnxtToOS
 set ignorecase
+map <leader>i :set ignorecase!<CR>
 set completeopt=menu,menuone,noinsert
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
 autocmd InsertCharPre * call AutoComplete()
@@ -257,3 +259,19 @@ fun! AutoComplete()
         call feedkeys("\<C-N>", 'n')
     end
 endfun
+
+" highlight word without searching
+nnoremap <silent> <cr> :let searchTerm = '\v<'.expand("<cword>").'>' <bar> let @/ = searchTerm <bar> echo '/'.@/ <bar> call histadd("search", searchTerm) <bar> set hls<cr>
+xnoremap <silent> <cr> yy:<C-u>let searchTerm = '\V'.substitute(escape(@", '\/'), "\n", '\\n', "g") <bar> let @/ = searchTerm <bar> call histadd("search", searchTerm) <bar> set hls <CR>
+
+" vim-airline fix
+set noshowmode
+let g:airline_powerline_fonts = 1
+
+" from the 'do 90% of what plugins do just with vim'
+set path+=**
+noremap <leader>f :find *
+
+" netrw fix
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
