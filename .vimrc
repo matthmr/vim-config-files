@@ -1,3 +1,6 @@
+" No vi compatibility
+set nocompatible
+
 " Line numbers
 set number
 set relativenumber
@@ -37,7 +40,7 @@ set nohlsearch
 set incsearch
 
 " Color scheme
-colorscheme gruvbox
+colorscheme onedark
 
 " Mouse
 set mouse=a
@@ -48,14 +51,13 @@ set clipboard=unamedplus
 " map <S-insert> <C-i>
 
 " Autocompletion
-" set wildmode
+" set wildmode=longest:full,full
+set wildmode=full
+" set omnifunc=...
+
 
 " Split windows
 set splitbelow splitright
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
 
 " Replacement
 nnoremap S :%s///g<Left><Left><Left>
@@ -100,10 +102,11 @@ map <C-c> <ESC><ESC>
 map <C-f> /
 
 " Find Only in visual area
-map <leader>o /\%V
+map <leader><C-f>o /\%V
 
 " Find From Register
-map <leader>r /<C-r>"<CR>
+nnoremap <leader>r yy/<C-r>"<CR>
+xnoremap <leader>r yy/<C-r>"
 vnoremap <leader>v y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " Line Number Alternative
@@ -142,34 +145,41 @@ let mapleader = "\\"
 call plug#begin()
 Plug 'junegunn/fzf'
 "Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+"Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
-"Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'wellle/context.vim'
 Plug 'dkprice/vim-easygrep'
 Plug 'tpope/vim-surround'
 Plug 'pseewald/vim-anyfold'
 Plug 'tomasiser/vim-code-dark'
-Plug 'mbbill/undotree'
+" Plug 'mbbill/undotree'
 call plug#end()
 
 " Plugin Specific
 " Nerd Tree
-nnoremap <leader>d :NERDTreeToggle<CR>
+nnoremap <leader>n :NERDTreeToggle<CR>
 
 " Anyfold
 map <leader>a :AnyFoldActivate<CR>
 
 " Context
-map <leader><C-c>e :ContextEnable<CR>
-map <leader><C-c>d :ContextDisable<CR>
+map <leader><C-e> :ContextEnable<CR>
+map <leader><C-d> :ContextDisable<CR>
 " it uses quite a lot of memory tbh, so don't load it for big files
 let g:context_enabled = 0
 
 " File nnoremaps
 nnoremap <leader>w :e#<CR>
-nnoremap <leader>s :FZF<CR>
+nnoremap <leader>o :e <Tab>
+nnoremap <leader><C-o> :e 
+nnoremap <leader>b :e **/<Tab>
+nnoremap <leader><C-b> :e **/
+nnoremap <leader><C-f>f :FZF<CR>
+
+" Dirty Hack
+set wildcharm=<Tab>
 
 " Terminal nnoremaps
 nnoremap <leader>t :vert term<CR>
@@ -180,12 +190,12 @@ nnoremap <silent> <C-s> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch
 
 
 " Grepping
-nnoremap <leader>g :vimgrep  *<left><left>
+nnoremap <leader>g :vimgrep  **<left><left><left>
 map <C-g>, :cp<CR>
 map <C-g>. :cn<CR>
 
 " Diffing
-map <leader>D :vert diffsplit
+map <leader>d :vert diffsplit <Tab>
 
 " Get Current Working Directory
 nnoremap <leader>p :pwd<CR>
@@ -208,16 +218,19 @@ hi SpecialKey ctermfg=240 guifg=#585858
 
 " Other alternatives
 map <leader><C-s> g<C-g>
-noremap <C-m> <C-y>
+nnoremap <C-p> <C-y>
+xnoremap <C-p> <C-y>
+inoremap <C-k> <C-x><C-f>
 
 " Set syntax for custom langs
 
 " scriptsd + deploy
-au BufRead,BufNewFile *.mo       set filetype=mo
-au BufRead,BufNewFile *.sd.d     set filetype=sddb " DONE
-au BufRead,BufNewFile *.sd.conf  set filetype=sdconf
-au BufRead,BufNewFile *.sd       set filetype=sd
-au BufRead,BufNewFile *.deploy   set filetype=deploy
+au BufRead,BufNewFile *\.dlang     set filetype=dlang
+au BufRead,BufNewFile *\.sd\.db    set filetype=sddb
+au BufRead,BufNewFile *\.sd\.sdb   set filetype=sddb
+au BufRead,BufNewFile *\.sd\.cfg   set filetype=sdcfg
+au BufRead,BufNewFile *\.sd        set filetype=sd
+au BufRead,BufNewFile *\.deploy    set filetype=deploy
 
 " moving lines
 nnoremap <leader><C-j> :m .+1<CR>==
@@ -248,6 +261,7 @@ endfun
 set shortmess=filnxtToOS
 set ignorecase
 map <leader>i :set ignorecase!<CR>
+" set completeopt=menu,menuone,noinsert,longest
 set completeopt=menu,menuone,noinsert
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
 autocmd InsertCharPre * call AutoComplete()
@@ -261,8 +275,11 @@ fun! AutoComplete()
 endfun
 
 " highlight word without searching
-nnoremap <silent> <cr> :let searchTerm = '\v<'.expand("<cword>").'>' <bar> let @/ = searchTerm <bar> echo '/'.@/ <bar> call histadd("search", searchTerm) <bar> set hls<cr>
-xnoremap <silent> <cr> yy:<C-u>let searchTerm = '\V'.substitute(escape(@", '\/'), "\n", '\\n', "g") <bar> let @/ = searchTerm <bar> call histadd("search", searchTerm) <bar> set hls <CR>
+nnoremap <silent><leader><cr> :let searchTerm = '\v<'.expand("<cword>").'>' <bar> let @/ = searchTerm <bar> echo '/'.@/ <bar> call histadd("search", searchTerm) <bar> set hls<cr>
+xnoremap <silent><leader><cr> yy:<C-u>let searchTerm = '\V'.substitute(escape(@", '\/'), "\n", '\\n', "g") <bar> let @/ = searchTerm <bar> call histadd("search", searchTerm) <bar> set hls <CR>
+
+" grep visual
+xnoremap <leader><C-g> y:vimgrep /<C-r>"/ *
 
 " vim-airline fix
 set noshowmode
@@ -270,8 +287,56 @@ let g:airline_powerline_fonts = 1
 
 " from the 'do 90% of what plugins do just with vim'
 set path+=**
-noremap <leader>f :find *
+nnoremap <leader>f :find *
 
 " netrw fix
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
+
+" windowing fix
+nnoremap <silent><leader>m :call MaximizeToggle()<CR>
+
+function! MaximizeToggle()
+  if exists("s:maximize_session")
+    exec "source " . s:maximize_session
+    call delete(s:maximize_session)
+    unlet s:maximize_session
+    let &hidden=s:maximize_hidden_save
+    unlet s:maximize_hidden_save
+  else
+    let s:maximize_hidden_save = &hidden
+    let s:maximize_session = tempname()
+    set hidden
+    exec "mksession! " . s:maximize_session
+    only
+  endif
+endfunction
+
+" wrap fix
+nnoremap <leader><C-w> :set nowrap!<CR>
+
+" rotate fix
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" grep fix
+augroup quickfix
+    autocmd!
+    autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost l* lwindow
+augroup END
+
+" completion fix
+nnoremap <leader>W :set complete+=k**<CR>
+
+" last command
+nnoremap <leader><C-l>c :<Up>
+nnoremap <leader><C-l>f /<Up>
+
+" g-hacks
+nnoremap <leader>h gh
+nnoremap <leader>j gj
+nnoremap <leader>k gk
+nnoremap <leader>l gl
