@@ -21,7 +21,7 @@ set noexpandtab
 
 " Formating
 set ruler
-" set nowrap
+set nowrap
 
 " Backuping
 set noswapfile
@@ -40,7 +40,7 @@ set nohlsearch
 set incsearch
 
 " Color scheme
-colorscheme onedark
+colorscheme gruvbox
 
 " Mouse
 set mouse=a
@@ -61,12 +61,11 @@ set splitbelow splitright
 
 " Replacement
 nnoremap S :%s///g<Left><Left><Left>
+xnoremap s :s///g<Left><Left><Left>
 
 " Tabs
 nnoremap <C-w>n :tabnew<CR>
 nnoremap <C-w>c :tabclose<CR>
-nnoremap <C-w>. :tabnext<CR>
-nnoremap <C-w>, :tabprevious<CR>
 
 " Cursor
 set guicursor=
@@ -81,22 +80,21 @@ set noerrorbells
 set scrolloff=4
 
 " Resizing windows
-nnoremap <leader><C-r>h <C-w><
-nnoremap <leader><C-r>j <C-w>+
-nnoremap <leader><C-r>k <C-w>-
-nnoremap <leader><C-r>l <C-w>>
-nnoremap <leader><C-r>e <C-w>=
+nnoremap <leader>r<C-h> <C-w><
+nnoremap <leader>r<C-j> <C-w>+
+nnoremap <leader>r<C-k> <C-w>-
+nnoremap <leader>r<C-l> <C-w>>
+nnoremap <leader>r<C-e> <C-w>=
 
 " Creating Adjecent windows
 map <C-w>w <C-w>v
-" map <C-w>s <C-w>s
 
 " Quit Alternative
 map Q :q<CR>
 map <leader>Q :q!<CR>
 
 " Esc Alternative
-map <C-c> <ESC><ESC>
+nnoremap <C-c> <C-[><Space>
 
 " Find Alternative
 map <C-f> /
@@ -139,22 +137,23 @@ set cursorline
 let mapleader = "\\"
 
 " Left Column
-" set signcolumn=yes
+set signcolumn=yes
+set cursorcolumn
 
 " Plugins (plug-vim)
 call plug#begin()
-Plug 'junegunn/fzf'
-"Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-"Plug 'airblade/vim-gitgutter'
+" Plug 'plasticboy/vim-markdown'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'scrooloose/nerdcommenter'
-Plug 'ap/vim-css-color'
+Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/fzf'
 Plug 'wellle/context.vim'
-Plug 'dkprice/vim-easygrep'
+Plug 'ap/vim-css-color'
 Plug 'tpope/vim-surround'
 Plug 'pseewald/vim-anyfold'
 Plug 'tomasiser/vim-code-dark'
-" Plug 'mbbill/undotree'
+Plug 'vimwiki/vimwiki'
+Plug 'mhinz/vim-startify'
+Plug 'mbbill/undotree'
 call plug#end()
 
 " Plugin Specific
@@ -174,8 +173,8 @@ let g:context_enabled = 0
 nnoremap <leader>w :e#<CR>
 nnoremap <leader>o :e <Tab>
 nnoremap <leader><C-o> :e 
-nnoremap <leader>b :e **/<Tab>
-nnoremap <leader><C-b> :e **/
+nnoremap <leader>x :e **/<Tab>
+nnoremap <leader><C-x> :e **/
 nnoremap <leader><C-f>f :FZF<CR>
 
 " Dirty Hack
@@ -190,12 +189,14 @@ nnoremap <silent> <C-s> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch
 
 
 " Grepping
-nnoremap <leader>g :vimgrep  **<left><left><left>
+nnoremap <leader>g :vimgrep // **<left><left><left><left>
 map <C-g>, :cp<CR>
 map <C-g>. :cn<CR>
 
 " Diffing
-map <leader>d :vert diffsplit <Tab>
+" nnoremap <leader>d :vert diffsplit <Tab>
+nnoremap <leader>d :vert diffsplit 
+" nnoremap <leader><C-d> :vert diffsplit 
 
 " Get Current Working Directory
 nnoremap <leader>p :pwd<CR>
@@ -225,20 +226,20 @@ inoremap <C-k> <C-x><C-f>
 " Set syntax for custom langs
 
 " scriptsd + deploy
-au BufRead,BufNewFile *\.dlang     set filetype=dlang
+au BufRead,BufNewFile *\.sd        set filetype=sdpkg
 au BufRead,BufNewFile *\.sd\.db    set filetype=sddb
-au BufRead,BufNewFile *\.sd\.sdb   set filetype=sddb
 au BufRead,BufNewFile *\.sd\.cfg   set filetype=sdcfg
-au BufRead,BufNewFile *\.sd        set filetype=sd
+au BufRead,BufNewFile *\.sd\.ext   set filetype=sdext
 au BufRead,BufNewFile *\.deploy    set filetype=deploy
+au BufRead,BufNewFile *\.dlang     set filetype=dlang
 
 " moving lines
-nnoremap <leader><C-j> :m .+1<CR>==
-nnoremap <leader><C-k> :m .-2<CR>==
+nnoremap <leader>m<C-j> :m .+1<CR>==
+nnoremap <leader>m<C-k> :m .-2<CR>==
 inoremap <M-j> <Esc>:m .+1<CR>==gi
 inoremap <M-k> <Esc>:m .-2<CR>==gi
-vnoremap <leader><C-j> :m '>+1<CR>gv=gv
-vnoremap <leader><C-k> :m '<-2<CR>gv=gv
+vnoremap <leader>m<C-j> :m '>+1<CR>gv=gv
+vnoremap <leader>m<C-k> :m '<-2<CR>gv=gv
 
 " cursor
 let &t_SI = "\e[5 q"
@@ -286,7 +287,7 @@ set noshowmode
 let g:airline_powerline_fonts = 1
 
 " from the 'do 90% of what plugins do just with vim'
-set path+=**
+set path=**
 nnoremap <leader>f :find *
 
 " netrw fix
@@ -316,10 +317,10 @@ endfunction
 nnoremap <leader><C-w> :set nowrap!<CR>
 
 " rotate fix
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
 
 " grep fix
 augroup quickfix
@@ -330,13 +331,85 @@ augroup END
 
 " completion fix
 nnoremap <leader>W :set complete+=k**<CR>
+set complete-=i
 
 " last command
-nnoremap <leader><C-l>c :<Up>
-nnoremap <leader><C-l>f /<Up>
+nnoremap <leader><C-u>j :<Up>
+nnoremap <leader><C-u>k /<Up>
 
 " g-hacks
-nnoremap <leader>h gh
-nnoremap <leader>j gj
-nnoremap <leader>k gk
-nnoremap <leader>l gl
+nnoremap <leader><C-j> gj
+nnoremap <leader><C-k> gk
+
+" replace on visual select
+xnoremap <leader>s :s///g<left><left><left>
+
+" horizontal scroll
+set sidescroll=4
+nnoremap <leader>0 g0
+nnoremap <leader>$ g$
+
+nnoremap <leader><C-h> :tabprevious<CR>
+nnoremap <leader><C-l> :tabnext<CR>
+
+nnoremap <leader><C-w>. 4zh
+nnoremap <leader><C-w>, 4zl
+
+" bar
+set colorcolumn=100
+
+" add new line
+nnoremap K s<CR><ESC>
+xnoremap K s<CR><ESC>
+
+" rainbow
+" let g:rainbow_active = 1
+au FileType c,cpp,python,sh,rust,javascript,json call rainbow#load()
+
+" case insensitive search
+set wildignorecase
+
+" tabs moving
+nnoremap <C-t><C-h> :-tabmove<CR>
+nnoremap <C-t><C-l> :+tabmove<CR>
+
+" vimwiki config
+let g:vimwiki_list = [{'path':'/home/mh/Wiki/', 'syntax': 'markdown', 'ext': 'md'}]
+let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
+let g:vimwiki_markdown_link_ext = 1
+
+" vimwiki compatibility
+filetype plugin on
+
+" startify
+let g:startify_bookmarks = [
+	\ { 's': '~/scripts/scriptsd' },
+	\ { 'v': '~/.vimrc' },
+	\ { 'p': '~/Projects' },
+	\ { 'd': '~/Documents/' },
+	\ ]
+
+let g:startify_custom_header = [
+	\ '\------------------------------------------\' ,
+	\ '|       H  H   https://twitch.tv/mhhmr     |' ,
+	\ '|       H  H                               |' ,
+	\ '| mmmm  HHHH                               |' ,
+	\ '| m m m H  H                               |' ,
+	\ '| m m m H  H   https://github.com/matthmr  |' ,
+	\ '\------------------------------------------\' ,
+	\ ]
+
+" gitgutter
+let g:gitgutter_max_signs = 200
+
+" update time
+let updatetime=2000 " updates each 2 seconds
+
+" undotree
+nnoremap <leader>u :UndotreeToggle<CR>
+
+" reload .vimrc
+nnoremap <leader>r :source /home/mh/.vimrc
+
+" buffer loading
+nnoremap <leader>b :buffers<CR>:buffer 
