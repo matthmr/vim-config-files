@@ -94,7 +94,7 @@ map Q :q<CR>
 map <leader>Q :q!<CR>
 
 " Esc Alternative
-nnoremap <C-c> <C-[><Space>
+inoremap <C-c> <ESC>
 
 " Find Alternative
 map <C-f> /
@@ -154,6 +154,7 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'vimwiki/vimwiki'
 Plug 'mhinz/vim-startify'
 Plug 'mbbill/undotree'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " Plugin Specific
@@ -173,15 +174,15 @@ let g:context_enabled = 0
 nnoremap <leader>w :e#<CR>
 nnoremap <leader>o :e <Tab>
 nnoremap <leader><C-o> :e 
-nnoremap <leader>x :e **/<Tab>
-nnoremap <leader><C-x> :e **/
+nnoremap <leader>x :e **/*<Tab>
+nnoremap <leader><C-x> :e **/*
 nnoremap <leader><C-f>f :FZF<CR>
 
 " Dirty Hack
 set wildcharm=<Tab>
 
 " Terminal nnoremaps
-nnoremap <leader>t :vert term<CR>
+nnoremap <leader><C-f>t :vert term<CR>
 
 " Search Highlighting nnoremap
 let hlstate=0
@@ -225,13 +226,8 @@ inoremap <C-k> <C-x><C-f>
 
 " Set syntax for custom langs
 
-" scriptsd + deploy
-au BufRead,BufNewFile *\.sd        set filetype=sdpkg
-au BufRead,BufNewFile *\.sd\.db    set filetype=sddb
-au BufRead,BufNewFile *\.sd\.cfg   set filetype=sdcfg
-au BufRead,BufNewFile *\.sd\.ext   set filetype=sdext
-au BufRead,BufNewFile *\.deploy    set filetype=deploy
-au BufRead,BufNewFile *\.dlang     set filetype=dlang
+" scriptsd
+au BufRead,BufNewFile *\.sd        set filetype=sdlang
 
 " moving lines
 nnoremap <leader>m<C-j> :m .+1<CR>==
@@ -265,7 +261,10 @@ map <leader>i :set ignorecase!<CR>
 " set completeopt=menu,menuone,noinsert,longest
 set completeopt=menu,menuone,noinsert
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
-autocmd InsertCharPre * call AutoComplete()
+
+" this makes it a bit slow, albeit it is really useful sometimes
+" autocmd InsertCharPre * call AutoComplete()
+
 fun! AutoComplete()
     if v:char =~ '\K'
         \ && getline('.')[col('.') - 2] !~ '\K' " last char
@@ -294,33 +293,14 @@ nnoremap <leader>f :find *
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 
-" windowing fix
-nnoremap <silent><leader>m :call MaximizeToggle()<CR>
-
-function! MaximizeToggle()
-  if exists("s:maximize_session")
-    exec "source " . s:maximize_session
-    call delete(s:maximize_session)
-    unlet s:maximize_session
-    let &hidden=s:maximize_hidden_save
-    unlet s:maximize_hidden_save
-  else
-    let s:maximize_hidden_save = &hidden
-    let s:maximize_session = tempname()
-    set hidden
-    exec "mksession! " . s:maximize_session
-    only
-  endif
-endfunction
-
 " wrap fix
 nnoremap <leader><C-w> :set nowrap!<CR>
 
 " rotate fix
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
+nnoremap <Space>h <C-w>h
+nnoremap <Space>j <C-w>j
+nnoremap <Space>k <C-w>k
+nnoremap <Space>l <C-w>l
 
 " grep fix
 augroup quickfix
@@ -349,8 +329,8 @@ set sidescroll=4
 nnoremap <leader>0 g0
 nnoremap <leader>$ g$
 
-nnoremap <leader><C-h> :tabprevious<CR>
-nnoremap <leader><C-l> :tabnext<CR>
+nnoremap <C-t><C-h> :tabprevious<CR>
+nnoremap <C-t><C-l> :tabnext<CR>
 
 nnoremap <leader><C-w>. 4zh
 nnoremap <leader><C-w>, 4zl
@@ -361,6 +341,8 @@ set colorcolumn=100
 " add new line
 nnoremap K s<CR><ESC>
 xnoremap K s<CR><ESC>
+nnoremap <leader>K i<CR><ESC>
+xnoremap <leader>K i<CR><ESC>
 
 " rainbow
 " let g:rainbow_active = 1
@@ -370,8 +352,8 @@ au FileType c,cpp,python,sh,rust,javascript,json call rainbow#load()
 set wildignorecase
 
 " tabs moving
-nnoremap <C-t><C-h> :-tabmove<CR>
-nnoremap <C-t><C-l> :+tabmove<CR>
+nnoremap <C-t>h :-tabmove<CR>
+nnoremap <C-t>l :+tabmove<CR>
 
 " vimwiki config
 let g:vimwiki_list = [{'path':'/home/mh/Wiki/', 'syntax': 'markdown', 'ext': 'md'}]
@@ -413,3 +395,41 @@ nnoremap <leader>r :source /home/mh/.vimrc
 
 " buffer loading
 nnoremap <leader>b :buffers<CR>:buffer 
+
+" templates
+nnoremap <leader><C-t>j :read /home/mh/.vim/templates/journal.template<CR>5k0$
+
+" gitgutter
+nnoremap <leader><C-g>p :GitGutterPreviewHunk<CR>
+
+" quit all
+nnoremap <leader>qa :qall<CR>
+
+" read from file
+nnoremap <leader><C-s>l :read 
+
+" marks
+nnoremap <leader><C-s>m :marks<CR>
+
+" tmux mouse fix
+set ttymouse=xterm2
+
+" <Space> nnoremaps
+nnoremap <space> v
+xnoremap <space> v
+
+" registers
+nnoremap <leader><C-s>r :registers<CR>
+
+" Y remap
+nnoremap Y y$
+
+" Airline
+let g:airline#extensions#whitespace#enabled = 0
+
+" Paste fix
+nnoremap <leader><C-s>p :set paste!<CR>
+
+" nerdtree hack
+let g:NERDTreeHijackNetrw = 1
+au VimEnter NERD_tree_1 enew | execute 'NERDTree '.argv()[0]
